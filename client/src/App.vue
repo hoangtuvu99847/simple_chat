@@ -8,15 +8,31 @@
     <div class="chat-area">
 
     </div>
-    <div class="room-area" style="padding-top: 20px">
-      <button @click.prevent="joinRoom1">Room 1</button>
-      <button @click.prevent="joinRoom2">Room 2</button>
-      <button @click.prevent="joinRoom3">Room 3</button>
-      <button @click.prevent="logout">Logout</button>
-    </div>
-    <br>
-    <button @click.prevent="sendPrivate">Private</button>
+    <button @click.prevent="logout">Logout</button>
 
+    <div class="room-area" style="padding-top: 20px">
+      <b>Rooms</b> <br>
+      <br>
+      <input type="text" v-model="roomName">
+      <button @click.prevent="createRoom">Create</button>
+    </div>
+    <div class="list-room">
+      <ul>
+        <li v-for="(room, idx) in rooms" :key="idx">
+          <button @click.prevent="handleJoinRoom(room)">{{room}}</button>
+        </li>
+      </ul>
+    </div>
+    <hr>
+
+    <br>
+    <div class="list-user">
+      <ul>
+        <li v-for="(user, idx) in users" :key="idx">
+          <button @click.prevent="sendToUser(user)">{{user}}</button>
+        </li>
+      </ul>
+    </div>
     <router-view></router-view>
   </div>
 
@@ -30,31 +46,42 @@ export default {
   data() {
     return {
       message: '',
-      room: {}
+      room: 'general',
+      rooms: [],
+      users: [],
+      roomName: ''
     }
   },
   created() {
-    this.$socket.emit('join_room', 'general')
+    this.$socket.emit('join_room', this.room)
   },
   mounted() {
 
   },
   sockets: {
     connect: function () {
-      console.log('socket connected')
+      console.log('socket connected: ', this.$socket.id)
     },
     chatMessage: function (data) {
       console.log('chat Message: ', data)
     },
     leaveRoom: function (data){
-      console.log('Leave room: ', data)
+      console.log('>>>>> Leave room: ', data)
     },
     joinRoom: function (data){
       console.log('Join room: ', data)
     },
+    room: function (data){
+      'roomEntity' in data && (this.rooms = Object.keys(data['roomEntity']))
+      console.log('POPUP: ', data)
+    },
     sendPrivate: function (data){
       console.log('Private data: ', data)
-    }
+    },
+    online: function (data){
+      this.users = data
+      console.log('LIST_SOCKET_ID: ', data)
+    },
   },
   methods: {
     handleSendMessage() {
@@ -62,31 +89,28 @@ export default {
       this.message = ''
     },
     handleJoinRoom(roomName){
-      this.$socket.emit('leave_room', 'general')
-      this.$socket.emit('join_room', roomName)
+      console.log('>> LEAVE ROOM: ', this.room)
+      this.$socket.emit('leave_room', this.room)
+      this.room = roomName
+      console.log('>> JOIN ROOM: ', this.room)
+      this.$socket.emit('join_room', this.room)
     },
-    joinRoom1() {
-      this.room = 'room1'
-      this.handleJoinRoom(this.room)
+    createRoom(){
+      this.roomName !== '' ? this.$socket.emit('create_room', this.roomName) : null
     },
-    joinRoom2() {
-      this.room = 'room2'
-      this.handleJoinRoom(this.room)
-    },
-    joinRoom3() {
-      this.room = 'room3'
-      this.handleJoinRoom(this.room)
+    deleteRoom(){
+
     },
     logout(){
       this.$socket.emit('leave_room', this.room)
       this.$socket.emit('join_room', 'general')
 
     },
-    sendPrivate(){
-      console.log('SOCKET: ', this.$socket.id)
+    sendToUser(user){
+      console.log('USER: ', user)
       this.$socket.emit('private_message', {
-        message: 'PRIVATE MESSAGE',
-        socketId: this.$socket.id,
+        message: 'PRIVATE_MESSAGE',
+        socketID: user
       })
     }
   }
