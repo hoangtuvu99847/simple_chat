@@ -4,6 +4,7 @@ import VueSocketIO from 'vue-socket.io'
 import VueRouter from 'vue-router'
 import {io} from "socket.io-client";
 import router from "./routes";
+import vuetify from './plugins/vuetify';
 
 const options = {
     transports: ["websocket"],
@@ -25,5 +26,6 @@ Vue.config.productionTip = false
 
 new Vue({
     router,
-    render: h => h(App),
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')
