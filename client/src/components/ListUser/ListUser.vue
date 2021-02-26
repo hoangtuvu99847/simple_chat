@@ -9,6 +9,7 @@
         <v-list-item
             v-for="(item, i) in getListUserOnline"
             :key="i"
+
         >
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>
@@ -38,7 +39,11 @@ export default {
     console.log('USERS: ', this.getListUserOnline)
   },
   sockets: {},
-  methods: {}
+  methods: {
+    selectUser(user) {
+      console.log('USER_CLICK: ', user)
+    }
+  }
 }
 </script>
 

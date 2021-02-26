@@ -5,11 +5,10 @@
       dark
   >
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
       <v-container class="mt-7">
         <v-text-field
             height="5px"
-            v-model="message4"
+            v-model="searchData"
             label="Search"
             outlined
             dense
