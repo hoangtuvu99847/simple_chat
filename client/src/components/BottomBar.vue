@@ -5,17 +5,17 @@
                        dark
                        shift
   >
-    <v-btn @click="handleNavigateFriendTab">
-      <span>Video</span>
-      <v-icon>mdi-television-play</v-icon>
+    <v-btn @click="handleNavigateUserTab">
+      <span>User</span>
+      <v-icon>mdi-account-multiple</v-icon>
     </v-btn>
     <v-btn @click="handleNavigateHomeTab">
-      <span>Music</span>
-      <v-icon>mdi-music-note</v-icon>
+      <span>Message</span>
+      <v-icon>mdi-forum</v-icon>
     </v-btn>
     <v-btn @click="handleNavigateRoomTab">
-      <span>Book</span>
-      <v-icon>mdi-book</v-icon>
+      <span>Room</span>
+      <v-icon>mdi-home-floor-g</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -43,8 +43,8 @@ export default {
     value: 1
   }),
   methods: {
-    handleNavigateFriendTab() {
-      this.$router.push('/').catch(() => {
+    handleNavigateUserTab() {
+      this.$router.push('users').catch(() => {
       })
     },
     handleNavigateHomeTab() {

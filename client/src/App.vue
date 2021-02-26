@@ -23,10 +23,18 @@ export default {
     BottomBar,
     HeaderBar
   },
-
-
   data: () => ({
     value: 1
   }),
+  sockets: {
+    connect: function (){
+      console.log('Socket connected!')
+    },
+    online: function (users){
+      console.log('List user online: ', users)
+      this.$store.dispatch('userConnect', users)
+
+    }
+  }
 };
 </script>
