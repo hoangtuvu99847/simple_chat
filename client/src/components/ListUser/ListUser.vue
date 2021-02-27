@@ -9,7 +9,6 @@
         <v-list-item
             v-for="(item, i) in getListUserOnline"
             :key="i"
-
         >
           <v-list-item-icon>
             <v-icon>mdi-account</v-icon>

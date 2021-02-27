@@ -48,7 +48,7 @@ export default {
       })
     },
     handleNavigateHomeTab() {
-      this.$router.push('login').catch(() => {
+      this.$router.push('chat').catch(() => {
       })
     },
     handleNavigateRoomTab() {
